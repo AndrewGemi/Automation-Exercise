@@ -9,6 +9,10 @@ public class HomePage {
     private final WebDriver driver;
     private final By slider = By.id("slider");
     private final By signupLogin = By.xpath("//a[contains(text(),'Signup / Login')]");
+    private final By loggedInAsUsername = By.xpath("//a[contains(text(),'Logged in as')]");
+    private final By deleteAccountButton = By.xpath("//a[.=' Delete Account']");
+    private final By accountDeletedHeading = By.xpath("//b[.='Account Deleted!']");
+    private final By logOutButton = By.xpath("//a[contains(text(),'Logout')]");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -25,4 +29,27 @@ public class HomePage {
     public void clickSignupLogin() {
         ElementAction.findElement(driver, signupLogin).click();
     }
+
+    public HomePage verifyLoggedInAsUsernameVisible() {
+        ElementAction.findElement(driver, loggedInAsUsername).isDisplayed();
+        return this;
+    }
+
+    public HomePage clickDeleteAccountButton() {
+        ElementAction.findElement(driver, deleteAccountButton).click();
+        return this;
+    }
+
+    public HomePage verifyAccountDeletedVisible() {
+        ElementAction.findElement(driver, accountDeletedHeading).isDisplayed();
+        System.out.println("Account deleted successfully");
+        return this;
+    }
+
+    public SignUpLoginPage clickLogOutButton() {
+        ElementAction.findElement(driver, logOutButton).click();
+        return new SignUpLoginPage(driver);
+    }
+
+
 }

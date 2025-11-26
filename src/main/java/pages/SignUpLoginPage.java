@@ -3,16 +3,20 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import utils.ElementAction;
+import utils.Gender;
 
 public class SignUpLoginPage {
     private final WebDriver driver;
+    // Register locators
     private final By headingNewUserSignup = By.xpath("//h2[.='New User Signup!']");
     private final By signUpNameInput = By.xpath("//input[@data-qa=\"signup-name\"]");
     private final By signUpEmailInput = By.xpath("//input[@data-qa=\"signup-email\"]");
     private final By signUpButton = By.xpath("//button[@data-qa=\"signup-button\"]");
     private final By headingEnterAccountInformation = By.xpath("//b[.='Enter Account Information']");
     private final By titleMrRadio = By.id("id_gender1");
+    private final By titleMsRadio = By.id("id_gender2");
     private final By name = By.id("name");
     private final By password = By.id("password");
     private final By days = By.id("days");
@@ -33,9 +37,14 @@ public class SignUpLoginPage {
     private final By createAccountButton = By.xpath("//button[@data-qa='create-account']");
     private final By accountCreatedHeading = By.xpath("//b[.='Account Created!']");
     private final By continueButton = By.xpath("//a[@data-qa='continue-button']");
-    private final By loggedInAsUsername = By.xpath("//a[contains(text(),'Logged in as')]");
-    private final By deleteAccountButton = By.xpath("//a[.=' Delete Account']");
-    private final By accountDeletedHeading = By.xpath("//b[.='Account Deleted!']");
+    private final By signUpErrorMessage = By.xpath("//p[contains(text(),'Email Address already exist!')]");
+
+    // Login locators
+    private final By headingLoginToYourAccount = By.xpath("//h2[.='Login to your account']");
+    private final By loginEmailInput = By.xpath("//input[@data-qa='login-email']");
+    private final By loginPasswordInput = By.xpath("//input[@data-qa='login-password']");
+    private final By loginButton = By.xpath("//button[@data-qa='login-button']");
+    private final By loginErrorMessage = By.xpath("//p[contains(text(),'Your email or password is incorrect!')]");
 
     public SignUpLoginPage(WebDriver driver) {
         this.driver = driver;
@@ -62,14 +71,14 @@ public class SignUpLoginPage {
         return this;
     }
 
-    public SignUpLoginPage enterAccountInformation() {
+    public SignUpLoginPage enterAccountInformation(Gender gender, String inName, String inPassword, String day, String month, String year) {
         // Implementation for entering account information
-        ElementAction.findElement(driver, titleMrRadio).click();
-        ElementAction.findElement(driver, name).sendKeys("Seyit");
-        ElementAction.findElement(driver, password).sendKeys("12345");
-        new Select(ElementAction.findElement(driver, days)).selectByValue("10");
-        new Select(ElementAction.findElement(driver, months)).selectByValue("5");
-        new Select(ElementAction.findElement(driver, years)).selectByValue("1990");
+        ElementAction.findElement(driver, gender == Gender.Mr ? titleMrRadio : titleMsRadio).click();
+        ElementAction.findElement(driver, name).sendKeys(inName);
+        ElementAction.findElement(driver, password).sendKeys(inPassword);
+        new Select(ElementAction.findElement(driver, days)).selectByValue(day);
+        new Select(ElementAction.findElement(driver, months)).selectByValue(month);
+        new Select(ElementAction.findElement(driver, years)).selectByValue(year);
 
         return this;
     }
@@ -84,17 +93,18 @@ public class SignUpLoginPage {
         return this;
     }
 
-    public SignUpLoginPage fillPersonalDetails() {
-        ElementAction.findElement(driver, firstName).sendKeys("Seyit");
-        ElementAction.findElement(driver, lastName).sendKeys("Kaya");
-        ElementAction.findElement(driver, company).sendKeys("Tech Company");
-        ElementAction.findElement(driver, address1).sendKeys("123 Main St");
-        ElementAction.findElement(driver, address2).sendKeys("Apt 4B");
-        new Select(ElementAction.findElement(driver, country)).selectByVisibleText("United States");
-        ElementAction.findElement(driver, state).sendKeys("California");
-        ElementAction.findElement(driver, city).sendKeys("Los Angeles");
-        ElementAction.findElement(driver, zipcode).sendKeys("90001");
-        ElementAction.findElement(driver, mobileNumber).sendKeys("1234567890");
+    public SignUpLoginPage fillPersonalDetails(String firstname, String lastname, String comp, String addr1, String addr2,
+                                               String countryName, String stat, String cit, String zip, String mobile) {
+        ElementAction.findElement(driver, firstName).sendKeys(firstname);
+        ElementAction.findElement(driver, lastName).sendKeys(lastname);
+        ElementAction.findElement(driver, company).sendKeys(comp);
+        ElementAction.findElement(driver, address1).sendKeys(addr1);
+        ElementAction.findElement(driver, address2).sendKeys(addr2);
+        new Select(ElementAction.findElement(driver, country)).selectByVisibleText(countryName);
+        ElementAction.findElement(driver, state).sendKeys(stat);
+        ElementAction.findElement(driver, city).sendKeys(cit);
+        ElementAction.findElement(driver, zipcode).sendKeys(zip);
+        ElementAction.findElement(driver, mobileNumber).sendKeys(mobile);
         return this;
     }
 
@@ -108,25 +118,36 @@ public class SignUpLoginPage {
         return this;
     }
 
-    public SignUpLoginPage clickContinueButton() {
+    public void clickContinueButton() {
         ElementAction.findElement(driver, continueButton).click();
+    }
+
+    public void verifyEmailAlreadyExistErrorMessageVisible() {
+        Assert.assertTrue(ElementAction.findElement(driver, signUpErrorMessage).isDisplayed(),
+                "Sign up error message is not visible");
+    }
+
+    // Additional methods for login
+    public SignUpLoginPage verifyLoginToYourAccountVisible() {
+        ElementAction.findElement(driver, headingLoginToYourAccount).isDisplayed();
         return this;
     }
 
-    public SignUpLoginPage verifyLoggedInAsUsernameVisible() {
-        ElementAction.findElement(driver, loggedInAsUsername).isDisplayed();
+    public SignUpLoginPage enterLoginEmailAndPassword(String email, String password) {
+        ElementAction.findElement(driver, loginEmailInput).sendKeys(email);
+        ElementAction.findElement(driver, loginPasswordInput).sendKeys(password);
         return this;
     }
 
-    public SignUpLoginPage clickDeleteAccountButton() {
-        ElementAction.findElement(driver, deleteAccountButton).click();
-        return this;
+    public HomePage clickLoginButton() {
+        ElementAction.findElement(driver, loginButton).click();
+        return new HomePage(driver);
     }
 
-    public void verifyAccountDeletedVisible() {
-        ElementAction.findElement(driver, accountDeletedHeading).isDisplayed();
-        System.out.println("Account deleted successfully");
-//        return this;
+    public void verifyLoginErrorMessageVisible() {
+        Assert.assertTrue(ElementAction.findElement(driver, loginErrorMessage).isDisplayed(),
+                "Login error message is not visible");
+
     }
 
 }

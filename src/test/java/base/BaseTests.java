@@ -21,6 +21,7 @@ public class BaseTests { // this class contains all before and after methods for
 
         driver = new ChromeDriver(options);
         driver.get("https://automationexercise.com/");
+
     }
 
     @AfterMethod
