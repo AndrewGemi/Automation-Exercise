@@ -13,6 +13,7 @@ public class HomePage {
     private final By deleteAccountButton = By.xpath("//a[.=' Delete Account']");
     private final By accountDeletedHeading = By.xpath("//b[.='Account Deleted!']");
     private final By logOutButton = By.xpath("//a[contains(text(),'Logout')]");
+    private final By contactUsButton = By.xpath("//a[.=' Contact us']");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -51,5 +52,9 @@ public class HomePage {
         return new SignUpLoginPage(driver);
     }
 
+    public ContactUsPage clickContactUsButton() {
+        ElementAction.findElement(driver, contactUsButton).click();
+        return new ContactUsPage(driver);
+    }
 
 }
