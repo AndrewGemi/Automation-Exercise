@@ -15,6 +15,7 @@ public class HomePage {
     private final By logOutButton = By.xpath("//a[contains(text(),'Logout')]");
     private final By contactUsButton = By.xpath("//a[.=' Contact us']");
     private final By testCasesButton = By.xpath("//a[.=' Test Cases']");
+    private final By productsButton = By.xpath("//a[contains(text(),'Products')]");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -60,7 +61,12 @@ public class HomePage {
 
     public void clickTestCasesButton() {
         ElementAction.findElement(driver, testCasesButton).click();
-        
+
+    }
+
+    public ProductsPage clickProductsButton() {
+        ElementAction.findElement(driver, productsButton).click();
+        return new ProductsPage(driver);
     }
 
 }
