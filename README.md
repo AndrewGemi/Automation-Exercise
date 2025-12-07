@@ -157,7 +157,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 10: Verify Subscription in home page
+### ✅ Test Case 10: Verify Subscription in home page
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'
@@ -169,7 +169,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 11: Verify Subscription in Cart page
+### ✅ Test Case 11: Verify Subscription in Cart page
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'

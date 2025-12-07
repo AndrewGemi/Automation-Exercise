@@ -26,4 +26,11 @@ public class ElementAction {
         return ElementAction.findElement(driver, locator).isDisplayed();
     }
 
+    // scroll to
+    public static void scrollToElement(WebDriver driver, By locator) {
+        WebElement element = findElement(driver, locator);
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+
 }

@@ -16,6 +16,9 @@ public class HomePage {
     private final By contactUsButton = By.xpath("//a[.=' Contact us']");
     private final By testCasesButton = By.xpath("//a[.=' Test Cases']");
     private final By productsButton = By.xpath("//a[contains(text(),'Products')]");
+    private final By footerSection = By.id("footer");
+    private final By cartButton = By.xpath("//a[@href='/view_cart']");
+
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -68,5 +71,16 @@ public class HomePage {
         ElementAction.findElement(driver, productsButton).click();
         return new ProductsPage(driver);
     }
+
+    public CartPage navigateToCartPage() {
+        ElementAction.findElement(driver, cartButton).click();
+        return new CartPage(driver);
+    }
+
+    public FooterPage scrollToFooterSection() {
+        ElementAction.scrollToElement(driver, footerSection);
+        return new FooterPage(driver);
+    }
+
 
 }
