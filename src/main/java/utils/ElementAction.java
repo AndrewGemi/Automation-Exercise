@@ -32,5 +32,9 @@ public class ElementAction {
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
+    public static void scrollToElement(WebDriver driver, WebElement element) {
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
 
 }
