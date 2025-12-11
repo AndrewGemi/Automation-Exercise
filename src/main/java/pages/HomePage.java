@@ -1,9 +1,12 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import utils.ElementAction;
+
+import java.time.Duration;
 
 public class HomePage {
     private final WebDriver driver;
@@ -18,7 +21,7 @@ public class HomePage {
     private final By productsButton = By.xpath("//a[contains(text(),'Products')]");
     private final By footerSection = By.id("footer");
     private final By cartButton = By.xpath("//a[@href='/view_cart']");
-
+    private final By shadowRootHost = By.className("grippy-host");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -81,6 +84,35 @@ public class HomePage {
         ElementAction.scrollToElement(driver, footerSection);
         return new FooterPage(driver);
     }
+
+    public ProductsPage clickViewProductsButton(int productNum) {
+        ElementAction.findElement(driver, By.xpath("//a[@href='/product_details/"+ productNum +"']")).click();
+        return new ProductsPage(driver);
+    }
+
+    public HomePage closeAdIfPresent() {
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(shadowRootHost));
+        } catch (TimeoutException ignored) {
+            return this; // Element never showed up → move on
+        }
+
+        // If we're here, element was found
+        WebElement element = driver.findElement(shadowRootHost);
+        if (element.isDisplayed()) {
+            element.click();
+        }
+        SearchContext shadowRoot = ElementAction.findElement(driver, shadowRootHost).getShadowRoot();
+        By arrowAdCloseButton = By.cssSelector(".ee span");
+        WebElement adCloseButton = shadowRoot.findElement(arrowAdCloseButton);
+        if (adCloseButton.isDisplayed()) {
+            adCloseButton.click();
+        }
+        return this;
+    }
+
 
 
 }

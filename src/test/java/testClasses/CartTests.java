@@ -33,4 +33,17 @@ public class CartTests extends BaseTests {
                 .verifyCartListVisible()
                 .verifyItemPriceQuantityTotalVisible();
     }
+
+    @Test
+    public void verifyProductQuantityInCart_TC13() {
+        new HomePage(driver)
+                .checkHomePageVisible()
+                .closeAdIfPresent()
+                .clickViewProductsButton(1)
+                .verifyProductDetailPageVisible(1)
+                .setProductQuantity("4")
+                .clickAddToCartButtonFromDetailPage()
+                .clickViewCartModalButton()
+                .verifyProductQuantityInCart("4");
+    }
 }

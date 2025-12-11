@@ -15,7 +15,7 @@ public class ProductsTests extends BaseTests {
                 .verifyProductListVisible()
                 .closeAdIfPresent()
                 .clickFirstProductViewDetails()
-                .verifyProductDetailPageVisible()
+                .verifyProductDetailPageVisible(1)
                 .verifyProductDetails();
 
     }

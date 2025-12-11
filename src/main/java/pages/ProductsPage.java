@@ -26,6 +26,8 @@ public class ProductsPage {
     private final By searchedProductsList = By.cssSelector(".single-products>div>p");
     private final By continueShoppingButton = By.cssSelector("div.modal-footer button");
     private final By viewCartModalButton = By.xpath("//u[contains(text(),'View Cart')]");
+    private final By quantityInput = By.id("quantity");
+    private final By addToCartButtonDetailPage = By.cssSelector("span button");
 
     public ProductsPage(WebDriver driver) {
         this.driver = driver;
@@ -71,8 +73,8 @@ public class ProductsPage {
         return this;
     }
 
-    public ProductsPage verifyProductDetailPageVisible() {
-        Assert.assertEquals(driver.getCurrentUrl(), "https://automationexercise.com/product_details/1", "Product detail page is not visible");
+    public ProductsPage verifyProductDetailPageVisible(int productId ) {
+        Assert.assertEquals(driver.getCurrentUrl(), "https://automationexercise.com/product_details/"+productId, "Product detail page is not visible");
         return this;
     }
 
@@ -148,4 +150,17 @@ public class ProductsPage {
         ElementAction.findElement(driver, viewCartModalButton).click();
         return new CartPage(driver);
     }
+
+    public ProductsPage setProductQuantity(String quantity) {
+        WebElement quantityInpE = ElementAction.findElement(driver, quantityInput);
+        quantityInpE.clear();
+        quantityInpE.sendKeys(quantity);
+        return this;
+    }
+
+    public ProductsPage clickAddToCartButtonFromDetailPage(){
+        ElementAction.findElement(driver, addToCartButtonDetailPage).click();
+        return this;
+    }
+
 }

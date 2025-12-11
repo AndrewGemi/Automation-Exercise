@@ -196,7 +196,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 13: Verify Product quantity in Cart
+### ✅ Test Case 13: Verify Product quantity in Cart
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'
