@@ -291,7 +291,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 18: View Category Products
+### ✅ Test Case 18: View Category Products
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'

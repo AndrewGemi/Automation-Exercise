@@ -16,4 +16,17 @@ public class HomeTests extends BaseTests {
                 .clickSubscriptionButton()
                 .verifySubscriptionSuccessMessageVisible();
     }
+
+    @Test
+    public void viewCategoryProducts_TC18() {
+        new HomePage(driver)
+                .selectCategory("Women")
+                .closeAdIfPresent()
+                .selectSubCategory("Tops")
+                .verifyCategoryProductsVisible("WOMEN - TOPS PRODUCTS")
+                .selectCategory("Men")
+                .selectSubCategory("Jeans")
+                .verifyCategoryProductsVisible("MEN - JEANS PRODUCTS");
+
+    }
 }

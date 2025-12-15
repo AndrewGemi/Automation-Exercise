@@ -1,13 +1,14 @@
 package pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import utils.ElementAction;
 
 import java.time.Duration;
-import java.util.List;
+import java.util.ArrayList;
 
 public class HomePage {
     private final WebDriver driver;
@@ -28,6 +29,9 @@ public class HomePage {
     private final By viewCartButtonLocator = By.xpath("//u[contains(text(),'View Cart')]");
     private final By continueButton = By.xpath("//a[@data-qa='continue-button']");
     private final By continueShoppingButton = By.cssSelector("div.modal-footer button");
+    private final By categoryList = By.cssSelector(".panel-heading a");
+    private final By subCategoryList = By.cssSelector(".panel-body a");
+    private final By categoryHeading = By.cssSelector(".features_items h2");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -93,7 +97,7 @@ public class HomePage {
     }
 
     public ProductsPage clickViewProductsButton(int productNum) {
-        ElementAction.findElement(driver, By.xpath("//a[@href='/product_details/"+ productNum +"']")).click();
+        ElementAction.findElement(driver, By.xpath("//a[@href='/product_details/" + productNum + "']")).click();
         return new ProductsPage(driver);
     }
 
@@ -123,15 +127,15 @@ public class HomePage {
     public HomePage hoverOverProduct(int productNum) {
         By productLocator = By.xpath("(//div[@class='product-image-wrapper'])[" + productNum + "]");
         // move to product before hovering
-        ElementAction.scrollToElement(driver,productLocator);
+        ElementAction.scrollToElement(driver, productLocator);
         ElementAction.hoverOverElement(driver, ElementAction.findElement(driver, productLocator));
         return this;
     }
 
     public HomePage clickAddToCartButton(int productIndex) {
-        ElementAction.scrollToElement(driver,By.xpath("//a[@data-product-id='"+productIndex+"']"));
-       ElementAction.findElement(driver,By.xpath("//a[@data-product-id='"+productIndex+"']")).click();
-       return this;
+        ElementAction.scrollToElement(driver, By.xpath("//a[@data-product-id='" + productIndex + "']"));
+        ElementAction.findElement(driver, By.xpath("//a[@data-product-id='" + productIndex + "']")).click();
+        return this;
     }
 
     public CartPage clickViewCartModalButton() {
@@ -155,10 +159,50 @@ public class HomePage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(continueShoppingButton));
         ElementAction.findElement(driver, continueShoppingButton).click();
-
         return this;
     }
 
+    public HomePage selectCategory(String categoryName) {
 
+        ArrayList<WebElement> categories = new ArrayList<>(ElementAction.findElements(driver, categoryList));
+        for (WebElement category : categories) {
+            if (category.getText().trim().equalsIgnoreCase(categoryName)) {
+                ElementAction.scrollToElement(driver, category);
+                category.click();
+
+                break;
+            }
+        }
+        return this;
+    }
+
+    public HomePage selectSubCategory(String subCategoryName) {
+        ArrayList<WebElement> subCategories = new ArrayList<>(ElementAction.findElements(driver, subCategoryList));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        for (WebElement subCategory : subCategories) {
+            if (subCategory.getText().trim().equalsIgnoreCase(subCategoryName)) {
+                wait.until(ExpectedConditions.elementToBeClickable(subCategory));
+                subCategory.click();
+                break;
+            }
+        }
+        return this;
+    }
+
+    public HomePage verifyCategoryProductsVisible(String expectedHeading) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        // wait for text heading to be refreshed
+        wait.until((ExpectedCondition<Boolean>) driver -> {
+            assert driver != null;
+            String actualText = driver.findElement(categoryHeading).getText().trim();
+            return actualText.equals(expectedHeading);
+        });
+        ElementAction.scrollToElement(driver, categoryHeading);
+
+        String actualHeading = ElementAction.findElement(driver, categoryHeading).getText().trim();
+        Assert.assertEquals(actualHeading, expectedHeading, "Category products heading does not match");
+        System.out.println("Category products are visible successfully");
+        return this;
+    }
 
 }
