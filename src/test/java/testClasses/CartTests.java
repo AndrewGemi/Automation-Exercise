@@ -3,6 +3,7 @@ package testClasses;
 import base.BaseTests;
 import org.testng.annotations.Test;
 import pages.HomePage;
+import utils.Gender;
 
 public class CartTests extends BaseTests {
 
@@ -46,4 +47,20 @@ public class CartTests extends BaseTests {
                 .clickViewCartModalButton()
                 .verifyProductQuantityInCart("4");
     }
+
+    @Test
+    public void RemoveProductsFromCart_TC16(){
+        new HomePage(driver)
+                .checkHomePageVisible()
+                .closeAdIfPresent()
+                .clickAddToCartButton(3)
+                .clickContinueShoppingButton()
+                .clickAddToCartButton(4)
+                .clickViewCartModalButton()
+                .verifyCartListVisible()
+                .clickRemoveButton(2)
+                .verifyProductRemovedFromCart(1);
+    }
+
+
 }

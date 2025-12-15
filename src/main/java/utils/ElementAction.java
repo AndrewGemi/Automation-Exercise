@@ -37,4 +37,8 @@ public class ElementAction {
     }
 
 
+    public static void hoverOverElement(WebDriver driver, WebElement element) {
+        org.openqa.selenium.interactions.Actions actions = new org.openqa.selenium.interactions.Actions(driver);
+        actions.moveToElement(element).perform();
+    }
 }

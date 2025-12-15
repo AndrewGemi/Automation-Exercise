@@ -128,7 +128,7 @@ public class ProductsPage {
 
                 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@data-product-id='" + productIndex + "'])[2]")));
                 WebElement addToCartButton = driver.findElement(By.xpath("(//a[@data-product-id='" + productIndex + "'])[2]"));
-
+                ElementAction.scrollToElement(driver, addToCartButton);
                 addToCartButton.click();
                 break;
             }

@@ -7,6 +7,7 @@ import org.testng.Assert;
 import utils.ElementAction;
 
 import java.time.Duration;
+import java.util.List;
 
 public class HomePage {
     private final WebDriver driver;
@@ -18,10 +19,15 @@ public class HomePage {
     private final By logOutButton = By.xpath("//a[contains(text(),'Logout')]");
     private final By contactUsButton = By.xpath("//a[.=' Contact us']");
     private final By testCasesButton = By.xpath("//a[.=' Test Cases']");
-    private final By productsButton = By.xpath("//a[contains(text(),'Products')]");
     private final By footerSection = By.id("footer");
     private final By cartButton = By.xpath("//a[@href='/view_cart']");
     private final By shadowRootHost = By.className("grippy-host");
+    private final By productsButton = By.xpath("//a[contains(text(),'Products')]");
+    private final By headercartButton = By.xpath("//a[contains(text(),' Cart')]");
+    private final By productsList = By.cssSelector(".features_items div.product-image-wrapper");
+    private final By viewCartButtonLocator = By.xpath("//u[contains(text(),'View Cart')]");
+    private final By continueButton = By.xpath("//a[@data-qa='continue-button']");
+    private final By continueShoppingButton = By.cssSelector("div.modal-footer button");
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -35,8 +41,9 @@ public class HomePage {
         return this;
     }
 
-    public void clickSignupLogin() {
+    public SignUpLoginPage clickSignupLogin() {
         ElementAction.findElement(driver, signupLogin).click();
+        return new SignUpLoginPage(driver);
     }
 
     public HomePage verifyLoggedInAsUsernameVisible() {
@@ -110,6 +117,45 @@ public class HomePage {
         if (adCloseButton.isDisplayed()) {
             adCloseButton.click();
         }
+        return this;
+    }
+
+    public HomePage hoverOverProduct(int productNum) {
+        By productLocator = By.xpath("(//div[@class='product-image-wrapper'])[" + productNum + "]");
+        // move to product before hovering
+        ElementAction.scrollToElement(driver,productLocator);
+        ElementAction.hoverOverElement(driver, ElementAction.findElement(driver, productLocator));
+        return this;
+    }
+
+    public HomePage clickAddToCartButton(int productIndex) {
+        ElementAction.scrollToElement(driver,By.xpath("//a[@data-product-id='"+productIndex+"']"));
+       ElementAction.findElement(driver,By.xpath("//a[@data-product-id='"+productIndex+"']")).click();
+       return this;
+    }
+
+    public CartPage clickViewCartModalButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(viewCartButtonLocator));
+        ElementAction.findElement(driver, viewCartButtonLocator).click();
+        return new CartPage(driver);
+    }
+
+    public CartPage clickHeaderCartButton() {
+        ElementAction.findElement(driver, headercartButton).click();
+        return new CartPage(driver);
+    }
+
+    public HomePage clickContinueButton() {
+        ElementAction.findElement(driver, continueButton).click();
+        return this;
+    }
+
+    public HomePage clickContinueShoppingButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(continueShoppingButton));
+        ElementAction.findElement(driver, continueShoppingButton).click();
+
         return this;
     }
 

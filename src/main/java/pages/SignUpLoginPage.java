@@ -1,11 +1,14 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import utils.ElementAction;
 import utils.Gender;
+
+import java.time.Duration;
 
 public class SignUpLoginPage {
     private final WebDriver driver;
@@ -38,7 +41,7 @@ public class SignUpLoginPage {
     private final By accountCreatedHeading = By.xpath("//b[.='Account Created!']");
     private final By continueButton = By.xpath("//a[@data-qa='continue-button']");
     private final By signUpErrorMessage = By.xpath("//p[contains(text(),'Email Address already exist!')]");
-
+    private final By shadowRootHost = By.className("grippy-host");
     // Login locators
     private final By headingLoginToYourAccount = By.xpath("//h2[.='Login to your account']");
     private final By loginEmailInput = By.xpath("//input[@data-qa='login-email']");
@@ -48,6 +51,29 @@ public class SignUpLoginPage {
 
     public SignUpLoginPage(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public SignUpLoginPage closeAdIfPresent() {
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(shadowRootHost));
+        } catch (TimeoutException ignored) {
+            return this; // Element never showed up → move on
+        }
+
+        // If we're here, element was found
+        WebElement element = driver.findElement(shadowRootHost);
+        if (element.isDisplayed()) {
+            element.click();
+        }
+        SearchContext shadowRoot = ElementAction.findElement(driver, shadowRootHost).getShadowRoot();
+        By arrowAdCloseButton = By.cssSelector(".ee span");
+        WebElement adCloseButton = shadowRoot.findElement(arrowAdCloseButton);
+        if (adCloseButton.isDisplayed()) {
+            adCloseButton.click();
+        }
+        return this;
     }
 
     public SignUpLoginPage verifyNewUserSignupVisible() {
@@ -118,8 +144,9 @@ public class SignUpLoginPage {
         return this;
     }
 
-    public void clickContinueButton() {
+    public HomePage clickContinueButton() {
         ElementAction.findElement(driver, continueButton).click();
+        return new HomePage(driver);
     }
 
     public void verifyEmailAlreadyExistErrorMessageVisible() {

@@ -210,7 +210,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 14: Place Order: Register while Checkout
+### ✅ Test Case 14: Place Order: Register while Checkout
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'
@@ -235,7 +235,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 15: Place Order: Register before Checkout
+### ✅ Test Case 15: Place Order: Register before Checkout
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'
@@ -258,7 +258,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 16: Place Order: Login before Checkout
+### ✅ Test Case 16: Place Order: Login before Checkout
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'
@@ -278,7 +278,7 @@ activities performed and the statuses of each test.
 
 - - - -
 
-### ⏳ Test Case 17: Remove Products From Cart
+### ✅ Test Case 17: Remove Products From Cart
 
 1. Launch browser
 2. Navigate to url 'http://automationexercise.com'
